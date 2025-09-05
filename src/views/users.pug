@@ -1,0 +1,9 @@
+extends layout
+
+block content 
+
+    h1 Lijst example database
+    ul 
+        each user in users 
+            li= user.first_name + " " + user.last_name
+            
