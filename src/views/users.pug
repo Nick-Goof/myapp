@@ -1,9 +1,10 @@
 extends layout
 
-block content 
+block content
+  div(style="text-align: right;")
+    a(href="/") Terug naar Home
 
-    h1 Lijst example database
-    ul 
-        each user in users 
-            li= user.first_name + " " + user.last_name
-            
+  h1 Lijst example database
+  ul 
+    each user in users 
+      li= user.first_name + " " + user.last_name
