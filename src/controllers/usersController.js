@@ -4,7 +4,7 @@ const usersController = {
     let userId = req.params.userId;
     usersService.get(userId, (error, users) => {
       if (error) next(error);
-      if (users) res.render("users", { users: users });
+      if (users) res.render("users/table", { users: users });
     });
   },
   delete: (req, res, next) => {
