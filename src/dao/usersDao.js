@@ -15,15 +15,7 @@ const usersDao = {
     );
   },
 
-  delete: (userId, callback) => {
-    const index = data.findIndex((user) => user.id == userId);
-    if (index !== -1) {
-      data.splice(index, 1);
-      return callback(undefined, true);
-    } else {
-      return callback(undefined, false);
-    }
-  },
+  delete: (userId, callback) => {},
 };
 
 module.exports = usersDao;
