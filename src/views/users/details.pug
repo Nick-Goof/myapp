@@ -8,10 +8,14 @@ block content
       h5.card-title #{users.first_name} #{users.last_name} 
       p.card-text 
 
-   
     ul.list-group.list-group-flush
       li.list-group-item Email: #{users.email}
-   
+      li.list-group-item 
+        | Active: 
+        if users.active === 1
+          span.text-success Yes
+        else
+          span.text-danger No
 
     div.card-body
       a.btn.btn-primary(href='/users/' + users.customer_id + '/edit') Edit

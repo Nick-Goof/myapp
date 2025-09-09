@@ -14,10 +14,22 @@ const usersDao = {
       }
     );
   },
-  update: (userId, email, callback) => {
+  update: (userId, first_name, last_name, email, active, callback) => {
     database.query(
-      "UPDATE ?? SET ?? = ? WHERE ?? = ?",
-      ["customer", "email", email, "customer_id", userId],
+      "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?",
+      [
+        "customer",
+        "first_name",
+        first_name,
+        "last_name",
+        last_name,
+        "email",
+        email,
+        "active",
+        active,
+        "customer_id",
+        userId,
+      ],
       (error, results) => {
         if (error) return callback(error, undefined);
         if (results.affectedRows > 0) return callback(undefined, true);
@@ -25,6 +37,7 @@ const usersDao = {
       }
     );
   },
+
   delete: (userId, callback) => {},
 };
 

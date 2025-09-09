@@ -15,7 +15,10 @@ const usersController = {
 
   update: (req, res, next) => {
     let userId = req.params.userId;
-    let { email } = req.body;
+    let { first_name, last_name, email, active } = req.body;
+
+    // als checkbox uitstaat is active undefined → maak hem 0
+    active = active ? 1 : 0;
 
     if (req.method === "GET") {
       usersService.get(userId, (error, users) => {
@@ -23,14 +26,21 @@ const usersController = {
         if (users) return res.render("users/edit", { users: users[0] });
       });
     } else {
-      usersService.update(userId, email, (error, result) => {
-        if (error) return next(error);
-        if (result) {
-          return res.redirect(`/users/${userId}/details`);
-        } else {
-          return res.status(400).send("Update failed");
+      usersService.update(
+        userId,
+        first_name,
+        last_name,
+        email,
+        active,
+        (error, result) => {
+          if (error) return next(error);
+          if (result) {
+            return res.redirect(`/users/${userId}/details`);
+          } else {
+            return res.status(400).send("Update failed");
+          }
         }
-      });
+      );
     }
   },
 

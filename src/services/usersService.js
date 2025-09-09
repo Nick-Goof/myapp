@@ -11,12 +11,20 @@ const usersService = {
       }
     });
   },
-  update: (userId, email, callback) => {
-    usersDao.update(userId, email, (error, result) => {
-      if (error) return callback(error, undefined);
-      return callback(undefined, result);
-    });
+  update: (userId, first_name, last_name, email, active, callback) => {
+    usersDao.update(
+      userId,
+      first_name,
+      last_name,
+      email,
+      active,
+      (error, result) => {
+        if (error) return callback(error, undefined);
+        return callback(undefined, result);
+      }
+    );
   },
+
   delete: (userId, callback) => {
     usersDao.delete(userId, (error, success) => {
       if (error) return callback(error, undefined);
