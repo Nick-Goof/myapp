@@ -8,22 +8,24 @@ block content
         img.rounded(
           src="https://media.istockphoto.com/id/1485546774/photo/bald-man-smiling-at-camera-standing-with-arms-crossed.webp?b=1&s=612x612&w=0&k=20&c=9imIwWTJpXEQGM6sUie2zeO7sKBQiSvpmkopyjv3ZdM="
           alt=""
-          
           height="200"
         )
 
-      
       h5.card-title #{users.first_name} #{users.last_name}
       p.card-text 
 
     ul.list-group.list-group-flush.text-start
       li.list-group-item Email: #{users.email}
+      li.list-group-item Address: #{address ? address.address : 'Onbekend'}
+      li.list-group-item Phone: #{address ? address.phone : 'Onbekend'}
       li.list-group-item 
         | Active: 
         if users.active === 1
           span.text-success Yes
         else
           span.text-danger No
+      li.list-group-item Account aangemaakt: #{users.create_date.toDateString()}
+      li.list-group-item Laatst geupdate: #{users.last_update.toDateString()}
 
     div.card-body
       a.btn.btn-primary(href='/users/' + users.customer_id + '/edit') Edit

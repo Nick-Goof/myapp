@@ -1,6 +1,8 @@
 extends ../layout 
 
 block content
+    div(style="text-align: right;")
+        a(href="/") Terug naar Home
     table.table.table-striped
         thead
             tr
@@ -10,6 +12,7 @@ block content
                 th.col Email
                 th.col Active
                 th.col 
+                
         tbody
             each user in users
                 tr

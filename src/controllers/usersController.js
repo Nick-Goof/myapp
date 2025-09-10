@@ -1,14 +1,35 @@
 const usersService = require("../services/usersService");
+const addressService = require("../services/addressService");
 const logger = require("../util/logger");
 const usersController = {
+  validate: (req, res, next) => {
+    let userId = req.params.userId;
+    let { email, first_name, last_name, active } = req.body;
+    active = parseInt(active);
+    usersService.validate(email, first_name, last_name, active, (error) => {
+      if (error) next(error);
+      next();
+    });
+  },
+
   get: (req, res, next) => {
     let userId = req.params.userId;
     usersService.get(userId, (error, users) => {
-      if (error) next(error);
+      if (error) return next(error);
       if (users) {
-        userId == undefined
-          ? res.render("users/table", { users: users })
-          : res.render("users/details", { users: users[0] });
+        if (userId == undefined) {
+          res.render("users/table", { users: users });
+        } else {
+          const user = users[0];
+          // Haal het adres op via addressService
+          addressService.get(user.address_id, (err, addresses) => {
+            if (err) return next(err);
+            res.render("users/details", {
+              users: user,
+              address: addresses && addresses[0] ? addresses[0] : null,
+            });
+          });
+        }
       }
     });
   },
