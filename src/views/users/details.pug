@@ -1,32 +1,54 @@
 extends ../layout
 
 block content 
-  div.card.text-center
+  div.card
     div.card-body
-      
-      div.d-flex.justify-content-center.mb-3
+      // Foto en naam gecentreerd bovenaan
+      .d-flex.flex-column.align-items-center.mb-4
         img.rounded(
           src="https://media.istockphoto.com/id/1485546774/photo/bald-man-smiling-at-camera-standing-with-arms-crossed.webp?b=1&s=612x612&w=0&k=20&c=9imIwWTJpXEQGM6sUie2zeO7sKBQiSvpmkopyjv3ZdM="
           alt=""
           height="200"
         )
-
-      h5.card-title #{users.first_name} #{users.last_name}
-      p.card-text 
-
-    ul.list-group.list-group-flush.text-start
-      li.list-group-item Email: #{users.email}
-      li.list-group-item Address: #{address ? address.address : 'Onbekend'}
-      li.list-group-item Phone: #{address ? address.phone : 'Onbekend'}
-      li.list-group-item 
-        | Active: 
-        if users.active === 1
-          span.text-success Yes
-        else
-          span.text-danger No
-      li.list-group-item Account aangemaakt: #{users.create_date.toDateString()}
-      li.list-group-item Laatst geupdate: #{users.last_update.toDateString()}
-
-    div.card-body
-      a.btn.btn-primary(href='/users/' + users.customer_id + '/edit') Edit
-      a.btn.btn-warning(href="/users") Cancel
+        h3.mt-3.mb-4.text-center #{users.first_name} #{users.last_name}
+      .row
+        // Gegevens links
+        .col-md-5
+          h4.mb-3 Gegevens
+          ul.list-group.list-group-flush.mb-4
+            li.list-group-item Email: #{users.email}
+            li.list-group-item Address: #{address ? address.address : 'Onbekend'}
+            li.list-group-item Phone: #{address ? address.phone : 'Onbekend'}
+            li.list-group-item 
+              | Active: 
+              if users.active === 1
+                span.text-success Yes
+              else
+                span.text-danger No
+            li.list-group-item Account aangemaakt: #{users.create_date.toDateString()}
+            li.list-group-item Laatst geupdate: #{users.last_update.toDateString()}
+        // Rentals rechts, scrollbaar
+        .col-md-7
+          h4.mb-3 Rentals
+          .rentals-scroll(style="max-height:350px; overflow-y:auto; border:1px solid #eee; border-radius:8px; background:#fafbfc;")
+            if rentals.length > 0
+              table.table.mb-0
+                thead
+                  tr
+                    th Rental ID
+                    th Rental Date
+                    th Return Date
+                    th Inventory ID
+                tbody
+                  each rental in rentals
+                    tr
+                      td #{rental.rental_id}
+                      td #{rental.rental_date.toDateString()}
+                      td #{rental.return_date ? rental.return_date.toDateString() : 'N/A'}
+                      td #{rental.inventory_id}
+            else
+              p.text-muted.p-3 Geen rentals gevonden.
+      // Knoppen onderaan gecentreerd
+      .d-flex.justify-content-center.mt-4
+        a.btn.btn-primary.me-2(href='/users/' + users.customer_id + '/edit') Edit
+        a.btn.btn-warning.ms-2(href="/users") Cancel

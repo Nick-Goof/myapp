@@ -1,5 +1,7 @@
 const usersService = require("../services/usersService");
 const addressService = require("../services/addressService");
+const rentalService = require("../services/rentalService");
+
 const logger = require("../util/logger");
 const usersController = {
   validate: (req, res, next) => {
@@ -21,12 +23,16 @@ const usersController = {
           res.render("users/table", { users: users });
         } else {
           const user = users[0];
-          // Haal het adres op via addressService
           addressService.get(user.address_id, (err, addresses) => {
             if (err) return next(err);
-            res.render("users/details", {
-              users: user,
-              address: addresses && addresses[0] ? addresses[0] : null,
+            // Rentals ophalen
+            rentalService.getByCustomerId(userId, (err2, rentals) => {
+              if (err2) return next(err2);
+              res.render("users/details", {
+                users: user,
+                address: addresses && addresses[0] ? addresses[0] : null,
+                rentals: rentals || [],
+              });
             });
           });
         }
