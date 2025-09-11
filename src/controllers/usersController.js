@@ -38,7 +38,6 @@ const usersController = {
     let userId = req.params.userId;
     let { first_name, last_name, email, active } = req.body;
 
-    // als checkbox uitstaat is active undefined → maak hem 0
     active = active ? 1 : 0;
 
     if (req.method === "GET") {
@@ -69,8 +68,10 @@ const usersController = {
     let userId = req.params.userId;
     usersService.delete(userId, (error, success) => {
       if (error) return next(error);
-      if (success) return res.status(200).send(`User ${userId} deleted`);
-      return res.status(404).send(`User ${userId} not found`);
+      if (success) {
+        return res.redirect("/users");
+      }
+      res.status(404).send("Gebruiker niet gevonden");
     });
   },
 };

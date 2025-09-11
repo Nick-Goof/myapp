@@ -1,54 +1,71 @@
 extends ../layout
 
 block content 
-    div.card
-        div.card-body
-            form(method='POST' action='/users/' + users.customer_id + '/edit')
-                div.mb-3
-                    label(for="first_name" class="form-label") First Name
-                    input(
-                        type="text"
-                        name="first_name"
-                        class='form-control'
-                        value=users.first_name
-                        id="first_name"
-                        required
-                    )
+  div.card
+    div.card-body
+      // Update-formulier
+      form(method='POST', action='/users/' + users.customer_id + '/edit')
+        div.mb-3
+          label(for="first_name" class="form-label") First Name
+          input(
+            type="text"
+            name="first_name"
+            class='form-control'
+            value=users.first_name
+            id="first_name"
+            required
+          )
 
-                div.mb-3
-                    label(for="last_name" class="form-label") Last Name
-                    input(
-                        type="text"
-                        name="last_name"
-                        class='form-control'
-                        value=users.last_name
-                        id="last_name"
-                        required
-                    )
+        div.mb-3
+          label(for="last_name" class="form-label") Last Name
+          input(
+            type="text"
+            name="last_name"
+            class='form-control'
+            value=users.last_name
+            id="last_name"
+            required
+          )
 
-                div.mb-3
-                    label(for="email" class="form-label") Email address
-                    input(
-                        type="email"
-                        name="email"
-                        class='form-control'
-                        value=users.email 
-                        id="email"
-                        aria-describedby="emailHelp"
-                        required
-                    )
-                    div(id="emailHelp" class="form-text") We'll never share your email with anyone else.
+        div.mb-3
+          label(for="email" class="form-label") Email address
+          input(
+            type="email"
+            name="email"
+            class='form-control'
+            value=users.email 
+            id="email"
+            aria-describedby="emailHelp"
+            required
+          )
+          div(id="emailHelp" class="form-text") We'll never share your email with anyone else.
 
-                div.mb-3.form-check
-                    input.form-check-input(
-                        type="checkbox"
-                        id="active"
-                        name="active"
-                        value="1"
-                        checked=users.active === 1
-                    )
-                    label.form-check-label(for="active") Active
+        div.mb-3.form-check
+          input.form-check-input(
+            type="checkbox"
+            id="active"
+            name="active"
+            value="1"
+            checked=users.active === 1
+          )
+          label.form-check-label(for="active") Active
 
-                div
-                    button.btn.btn-primary.me-2(type='submit') Submit
-                    button.btn.btn-warning.ml-2(type='button' onclick=`window.location.href='/users/${users.customer_id}/details'`) Cancel
+        div
+          button.btn.btn-primary.me-2(type='submit') Submit
+          button.btn.btn-warning.me-2(type='button', onclick=`window.location.href='/users/${users.customer_id}/details'`) Cancel
+          button.btn.btn-danger.me-2(type="button", data-bs-toggle="modal", data-bs-target="#deleteModal") Delete
+
+  // Delete-modal BUITEN het update-formulier!
+  div.modal.fade(id="deleteModal", tabindex="-1", aria-labelledby="deleteModalLabel", aria-hidden="true")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header.bg-danger.text-white
+          h5.modal-title#deleteModalLabel Verwijder gebruiker
+          button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+        div.modal-body
+          i.bi.bi-exclamation-triangle-fill.text-danger.me-2(style="font-size:2rem;vertical-align:middle;")
+          | Weet je zeker dat je deze gebruiker wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+        div.modal-footer
+          button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Annuleren
+          form(method="POST", action="/users/delete/" + users.customer_id, style="display:inline;")
+            button.btn.btn-danger(type="submit") Ja, verwijderen
